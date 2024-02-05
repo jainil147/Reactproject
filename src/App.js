@@ -6,13 +6,13 @@ import { useState } from 'react'
 function App() {
 	const [name, setName] = useState("");
 	const [email, setEmail] = useState("");
-	const [moblieNumber , setMobileNumber] = useState("");
+	const [moblieNumber, setMobileNumber] = useState("");
 	const handleOnSubmit = async (e) => {
 		e.preventDefault();
 		let result = await fetch(
-		'http://127.0.0.1:5000/register', {
+			'http://127.0.0.1:5000/register', {
 			method: "post",
-			body: JSON.stringify({ name, email ,moblieNumber}),
+			body: JSON.stringify({ name, email, moblieNumber }),
 			headers: {
 				'Content-Type': 'application/json'
 			}
@@ -28,19 +28,28 @@ function App() {
 	}
 	return (
 		<>
-			<h1>This is React WebApp </h1>
-			<form action="">
-				<input type="text" placeholder="name"
-				value={name} onChange={(e) => setName(e.target.value)} />
-				<input type="email" placeholder="email"
-				value={email} onChange={(e) => setEmail(e.target.value)} />
-				<input type="number" placeholder="Mobile Number"
-				value={moblieNumber} onChange={(e) => setMobileNumber(e.target.value)} />
-				
+	<div class="main">  	
+		<input type="checkbox" id="chk" aria-hidden="true"/>
 
-				<button type="submit"
-				onClick={handleOnSubmit}>submit</button>
-			</form>
+			<div class="signup">
+				<form>
+					<label for="chk" aria-hidden="true">Sign up</label>
+					<input type="text" name="txt" placeholder="User name" required=""/>
+					<input type="email" name="email" placeholder="Email" required=""/>
+					<input type="password" name="pswd" placeholder="Password" required=""/>
+					<button>Sign up</button>
+				</form>
+			</div>
+
+			<div class="login">
+				<form>
+					<label for="chk" aria-hidden="true">Login</label>
+					<input type="email" name="email" placeholder="Email" required=""/>
+					<input type="password" name="pswd" placeholder="Password" required=""/>
+					<button>Login</button>
+				</form>
+			</div>
+	</div>
 
 		</>
 	);

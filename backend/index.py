@@ -1,14 +1,13 @@
-
-from flask import Flask, jsonify, request
+from flask import Flask, request, jsonify
 from flask_cors import CORS
 from pymongo import MongoClient
 
 app = Flask(__name__)
-CORS(app)  # Enable CORS
+CORS(app, origins=["http://localhost:3000"])  # Allow frontend at this origin
 
-client = MongoClient("mongodb://127.0.0.1:27017/yourDB-name")
-db = client["yourDB-name"]  # Access the specific database
-user_collection = db["users"]  # Access the "users" collection
+client = MongoClient("mongodb://127.0.0.1:27017/yourDB-name")  # Replace with your MongoDB connection details
+db = client["yourDB-name"]
+users_collection = db["users"]
 
 @app.route("/")
 def index():
@@ -19,8 +18,8 @@ def register():
     user_data = request.json
 
     try:
-        result = user_collection.insert_one(user_data)
-        registered_user = user_collection.find_one({"_id": result.inserted_id})
+        result = users_collection.insert_one(user_data)
+        registered_user = users_collection.find_one({"_id": result.inserted_id})
 
         # Exclude password from response
         registered_user.pop("password")
@@ -31,4 +30,4 @@ def register():
         return jsonify({"error": "Something went wrong"}), 500
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+    app.run(host="0.0.0.0", port=5000, debug=True)

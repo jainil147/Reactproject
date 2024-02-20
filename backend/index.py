@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from pymongo import MongoClient
+from werkzeug.security import generate_password_hash
 
 app = Flask(__name__)
 CORS(app, origins=["http://localhost:3000"])  # Allow frontend at this origin
@@ -15,19 +16,44 @@ def index():
 
 @app.route("/register", methods=["POST"])
 def register():
-    user_data = request.json
 
-    try:
-        result = users_collection.insert_one(user_data)
-        registered_user = users_collection.find_one({"_id": result.inserted_id})
+    user_data = request.get_json()
 
-        # Exclude password from response
-        registered_user.pop("password")
+    username = user_data['name']
+    email = user_data['email']
+    password = user_data['password']
+    mobilenumber = user_data['moblieNumber']
 
-        return jsonify(registered_user)
+    hashed_password = generate_password_hash(password)
 
-    except Exception as e:
-        return jsonify({"error": "Something went wrong"}), 500
+    user = {
+        'name' : username,
+        'password' : hashed_password,
+        'email': email ,
+        'moblieNumber' : mobilenumber
+
+
+    }
+
+    users_collection.insert_one(user)
+    # registered_user = users_collection.find_one({"_id": result.inserted_id})
+
+    return jsonify({"message": "successful fuck"})
+
+
+    # user_data = request.get_json()
+
+    # try:
+    #     result = users_collection.insert_one(user_data)
+    #     registered_user = users_collection.find_one({"_id": result.inserted_id})
+
+    #     # Exclude password from response
+    #     registered_user.pop("password")
+
+    #     return jsonify(registered_user)
+
+    # except Exception as e:
+    #     return jsonify({"error": "Something went wrong"}), 500
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)

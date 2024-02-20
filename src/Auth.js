@@ -1,7 +1,3 @@
-// Frontend code 
-// Filename - App.js
-// Filename - App.js
-
 import { useState } from 'react'
 function App() {
 	const [name, setName] = useState("");
@@ -36,20 +32,21 @@ function App() {
 		<input type="checkbox" id="chk" aria-hidden="true"/>
 
 			<div className="signup">
-			<form action="">
+			<form onSubmit={handleOnSubmit} action="POST">
 			<label htmlFor="chk" aria-hidden="true">Sign up</label>
-				<input type="text" placeholder="User Name"
+				<input name = "name" type="text" placeholder="User Name" required
 				value={name} onChange={(e) => setName(e.target.value)} />
-				<input type="email" placeholder="email"
+				<input type="email" placeholder="email" required
 				value={email} onChange={(e) => setEmail(e.target.value)} />
-				<input type="text" placeholder="Mobile Number"
-				value={moblieNumber} onChange={(e) => setMobileNumber(e.target.value)} />
-				<input type="password" placeholder="Enter the Password"
+
+				<input type="tel" placeholder="123-45-678" 	required
+				value={moblieNumber} name="moblieNumber" onChange={(e) => setMobileNumber(e.target.value)} pattern="\+?[0-9]{10}" />
+
+				<input type="password" placeholder="Enter the Password" required
 				value={password} onChange={(e) => setPassword(e.target.value)} />
 				
 
-				<button type="submit"
-				onClick={handleOnSubmit}>submit</button>
+				<input type="submit" id='button' name="Submit"  value="Register" />
 			</form>
 
 			</div>
